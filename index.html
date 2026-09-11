@@ -57,9 +57,9 @@
       --shadow-sm: 0 1px 2px rgba(14, 32, 34, 0.06);
       --shadow-md: 0 8px 24px rgba(14, 32, 34, 0.08);
       --shadow-lg: 0 16px 48px rgba(14, 32, 34, 0.12);
-      --content-narrow: 720px;
-      --content-default: 1100px;
-      --content-wide: 1280px;
+      --content-narrow: 792px;
+      --content-default: 1210px;
+      --content-wide: 1408px;
       --font-display: 'Instrument Serif', Georgia, serif;
       --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
       --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -400,17 +400,18 @@
     }
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-4);
-      margin-top: var(--space-8);
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: var(--space-3);
+      margin-top: var(--space-6);
     }
     .stat {
       background: var(--color-surface);
       border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
       border-radius: var(--radius-lg);
-      padding: var(--space-5);
+      padding: var(--space-4);
       box-shadow: var(--shadow-sm);
       transition: transform var(--transition), box-shadow var(--transition);
+      cursor: default;
     }
     .stat:hover {
       transform: translateY(-2px);
@@ -418,15 +419,16 @@
     }
     .stat strong {
       display: block;
-      font-size: var(--text-xl);
+      font-size: var(--text-lg);
       line-height: 1;
-      margin-bottom: var(--space-2);
+      margin-bottom: var(--space-1);
       font-variant-numeric: tabular-nums;
+      color: var(--color-primary);
     }
     .stat span {
       display: block;
       color: var(--color-text-muted);
-      font-size: var(--text-sm);
+      font-size: var(--text-xs);
     }
     .grid-2 {
       display: grid;
@@ -902,6 +904,10 @@
               <span class="hero-profile-role">Computational Biologist &amp; Bioinformatician</span>
             </div>
           </div>
+          <div class="hero-actions" style="margin-top: 0; margin-bottom: var(--space-5);">
+            <a class="btn btn-primary" href="mailto:nrsivashanmugam@gmail.com">Email me</a>
+            <a class="btn btn-secondary" href="#publications">View publications</a>
+          </div>
           <div class="meta-list">
             <div class="meta-item">
               <span class="meta-label">Current focus</span>
@@ -928,22 +934,34 @@
         <div data-reveal>
           <h2 class="hero-subtitle">A computational biologist bridging structure, sequence, and AI.</h2>
           <p class="hero-subtitle">I work at the interface of protein structure, carbohydrate-active enzymes, and AI &mdash; using protein language models and structure-based methods to understand protein&ndash;carbohydrate recognition, and turning that research into open databases and web servers that others can build on, from glycobiology to antimicrobial resistance.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="mailto:nrsivashanmugam@gmail.com">Email me</a>
-            <a class="btn btn-secondary" href="#publications">View publications</a>
-          </div>
           <div class="stats" aria-label="Profile highlights">
-            <article class="stat">
+            <article class="stat" title="Peer-reviewed publications and preprints spanning glycobiology, CAZyme discovery, and antimicrobial research.">
               <strong>18</strong>
-              <span>Peer-reviewed publications and preprints spanning glycobiology, CAZyme discovery, and antimicrobial research.</span>
+              <span>Publications</span>
             </article>
-            <article class="stat">
+            <article class="stat" title="Years of research experience in protein structure analysis, bioinformatics, and machine learning.">
               <strong>10+</strong>
-              <span>Years of research experience in protein structure analysis, bioinformatics, and machine learning.</span>
+              <span>Years&rsquo; experience</span>
             </article>
-            <article class="stat">
+            <article class="stat" title="Journals peer-reviewed, including Nature Communications, Bioinformatics, and PLOS One.">
               <strong>50+</strong>
-              <span>Journals peer-reviewed, including Nature Communications, Bioinformatics, and PLOS One.</span>
+              <span>Journals reviewed</span>
+            </article>
+            <article class="stat" title="Editorial roles, including Community Reviewer and Topic Coordinator for Frontiers in Bacteriology.">
+              <strong>2</strong>
+              <span>Editorial roles</span>
+            </article>
+            <article class="stat" title="Databases &amp; web servers built &mdash; ProCaff, CarbDisMut, CAZyme3D, AcrDB-update, dbCAN-sub.">
+              <strong>5+</strong>
+              <span>Databases &amp; tools</span>
+            </article>
+            <article class="stat" title="Community challenges &mdash; CASP16 and the Vivli AMR Surveillance Data Challenge.">
+              <strong>2</strong>
+              <span>Community challenges</span>
+            </article>
+            <article class="stat" title="Binding-affinity prediction web servers &mdash; PCA-Pred and PCA-MutPred.">
+              <strong>2+</strong>
+              <span>Web servers</span>
             </article>
           </div>
           <div class="chips" aria-label="Core expertise areas">
@@ -1530,7 +1548,7 @@
         </a>
       </div>
     </div>
-    <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=o_QwlC23RS83bs58kavorMLwXuSfrLzDeLOyryZPf2s&cl=ffffff&w=a"></script>
+    <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=o_QwlC23RS83bs58kavorMLwXuSfrLzDeLOyryZPf2s&cl=ffffff&w=180"></script>
   </footer>
 
   <script>
