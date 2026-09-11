@@ -115,9 +115,7 @@
       font-size: var(--text-base);
       line-height: 1.65;
       color: var(--color-text);
-      background:
-        radial-gradient(circle at top left, color-mix(in srgb, var(--color-primary) 10%, transparent), transparent 34%),
-        var(--color-bg);
+      background: var(--color-bg);
     }
     img, svg { display: block; max-width: 100%; }
     a {
@@ -156,8 +154,11 @@
       padding-block: clamp(var(--space-6), 2.5vw, var(--space-10));
       scroll-margin-top: 96px;
     }
+    main > section:nth-of-type(odd) {
+      background: var(--color-bg);
+    }
     main > section:nth-of-type(even) {
-      background: color-mix(in srgb, var(--color-surface-offset) 55%, transparent);
+      background: var(--color-surface-offset);
       border-top: 1px solid var(--color-divider);
       border-bottom: 1px solid var(--color-divider);
     }
@@ -311,6 +312,69 @@
     }
     #show-all-sections[hidden] {
       display: none;
+    }
+    .dot-nav {
+      position: fixed;
+      right: var(--space-5);
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+    .dot-nav.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .dot-nav a {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--color-text) 22%, transparent);
+      transition: background var(--transition), transform var(--transition);
+      flex: 0 0 auto;
+    }
+    .dot-nav a:hover {
+      background: var(--color-primary);
+      transform: scale(1.4);
+    }
+    .dot-nav a.active {
+      background: var(--color-primary);
+      transform: scale(1.3);
+    }
+    .back-to-top {
+      position: fixed;
+      right: var(--space-5);
+      bottom: var(--space-5);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-md);
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity var(--transition), transform var(--transition), background var(--transition);
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--color-primary-hover);
+    }
+    @media (max-width: 980px) {
+      .dot-nav { display: none; }
     }
     .btn-primary {
       background: var(--color-primary);
@@ -1632,6 +1696,8 @@
 
       const sections = [...document.querySelectorAll('main section[id]')];
       const navLinks = [...document.querySelectorAll('.site-nav a')];
+      const dotLinks = [...document.querySelectorAll('.dot-nav a')];
+      const allSectionLinks = [...navLinks, ...dotLinks];
       const activateNav = () => {
         if (document.body.classList.contains('focus-mode')) return;
         const scrollY = window.scrollY + 120;
@@ -1639,12 +1705,22 @@
         sections.forEach((section) => {
           if (scrollY >= section.offsetTop) current = section.id;
         });
-        navLinks.forEach((link) => {
+        allSectionLinks.forEach((link) => {
           link.classList.toggle('active', link.getAttribute('href') === '#' + current);
         });
       };
       activateNav();
       window.addEventListener('scroll', activateNav, { passive: true });
+
+      const dotNav = document.getElementById('dot-nav');
+      const backToTop = document.getElementById('back-to-top');
+      const updateScrollUI = () => {
+        const scrolled = window.scrollY > 320;
+        if (dotNav) dotNav.classList.toggle('visible', scrolled);
+        if (backToTop) backToTop.classList.toggle('visible', scrolled);
+      };
+      updateScrollUI();
+      window.addEventListener('scroll', updateScrollUI, { passive: true });
 
       const revealElements = document.querySelectorAll('[data-reveal]');
       const observer = new IntersectionObserver((entries) => {
@@ -1678,7 +1754,7 @@
         mainSections.forEach((sec) => { sec.hidden = sec.id !== id; });
         document.body.classList.add('focus-mode');
         if (showAllBtn) showAllBtn.hidden = false;
-        navLinks.forEach((link) => {
+        allSectionLinks.forEach((link) => {
           link.classList.toggle('active', link.getAttribute('href') === '#' + id);
         });
       }
@@ -1689,7 +1765,7 @@
         if (showAllBtn) showAllBtn.hidden = true;
       }
 
-      navLinks.forEach((link) => {
+      allSectionLinks.forEach((link) => {
         link.addEventListener('click', () => {
           const id = link.getAttribute('href').slice(1);
           if (id) isolateSection(id);
@@ -1698,6 +1774,13 @@
 
       if (showAllBtn) {
         showAllBtn.addEventListener('click', () => {
+          showAllSections();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      if (backToTop) {
+        backToTop.addEventListener('click', () => {
           showAllSections();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
