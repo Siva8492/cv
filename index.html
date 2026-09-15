@@ -243,18 +243,28 @@
     .site-nav {
       display: flex;
       align-items: center;
-      gap: var(--space-5);
+      gap: 2px;
     }
     .site-nav a {
       min-height: 44px;
       display: inline-flex;
       align-items: center;
+      gap: 0.4em;
+      padding: 0 var(--space-3);
+      border-radius: var(--radius-full);
       font-size: var(--text-sm);
       color: var(--color-text-muted);
+      position: relative;
+      transition: color var(--transition), background var(--transition);
     }
-    .site-nav a:hover,
-    .site-nav a.active {
+    .site-nav a:hover {
       color: var(--color-text);
+      background: color-mix(in srgb, var(--color-text) 6%, transparent);
+    }
+    .site-nav a.active {
+      color: var(--color-primary);
+      background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+      font-weight: 600;
     }
     .hero {
       padding-top: clamp(var(--space-6), 3vw, var(--space-10));
@@ -303,15 +313,6 @@
       min-height: 38px;
       padding: 0 1rem;
       font-size: var(--text-xs);
-    }
-    #show-all-sections {
-      min-height: 36px;
-      padding: 0 var(--space-4);
-      font-size: var(--text-xs);
-      white-space: nowrap;
-    }
-    #show-all-sections[hidden] {
-      display: none;
     }
     .dot-nav {
       position: fixed;
@@ -912,7 +913,7 @@
         transform: translateY(0);
       }
       .site-nav a {
-        padding: var(--space-2) 0;
+        padding: var(--space-2) var(--space-3);
       }
       .hero-title { max-width: 12ch; }
       .hero-actions {
@@ -960,7 +961,6 @@
           <a href="#contact">Contact</a>
           <a href="#reference">References</a>
         </nav>
-        <!-- <button class="btn btn-secondary" type="button" id="show-all-sections" hidden>&larr; Show all sections</button> -->
         <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
@@ -1044,18 +1044,19 @@
           <h2 class="hero-subtitle">A computational biologist bridging protein sequence, structure and AI.</h2>
           <p class="hero-subtitle">I work on carbohydrate-active enzymes (CAZymes), protein-carbohydrate interactions, and developing bioinformatics databases and web tools using machine learning and protein language models. I completed my Ph.D. in Computational Biology from IIT Madras and have published 18+ peer-reviewed papers across Q1 journals. I have developed several biological databases and webservers from my research.</p>
           <div class="stats" aria-label="Profile highlights">
-            <article class="stat" title="Peer-reviewed publications and preprints spanning glycobiology, CAZyme discovery, and antimicrobial research.">
-              <strong>18</strong>
-              <span>Publications</span>
-            </article>
             <article class="stat" title="Years of research experience in protein structure analysis, bioinformatics, and machine learning.">
               <strong>10+</strong>
               <span>Years&rsquo; experience</span>
             </article>
-            <article class="stat" title="Journals peer-reviewed, including Nature Communications, Bioinformatics, and PLOS One.">
-              <strong>50+</strong>
-              <span>Journals reviewed</span>
+            <article class="stat" title="Peer-reviewed publications and preprints spanning glycobiology, CAZyme discovery, and antimicrobial research.">
+              <strong>18</strong>
+              <span>Publications</span>
             </article>
+            <article class="stat" title="Book chapters on protein–carbohydrate complexes, published with World Scientific Press.">
+              <strong>2</strong>
+              <span>Book chapters</span>
+            </article>
+
             <article class="stat" title="Editorial roles, including Community Reviewer and Topic Coordinator for Frontiers in Bacteriology.">
               <strong>2</strong>
               <span>Editorial roles</span>
@@ -1064,13 +1065,17 @@
               <strong>5+</strong>
               <span>Databases &amp; tools</span>
             </article>
+            <article class="stat" title="Binding-affinity prediction web servers &mdash; PCA-Pred and PCA-MutPred.">
+              <strong>2+</strong>
+              <span>Web servers</span>
+            </article>
             <article class="stat" title="Community challenges &mdash; CASP16 and the Vivli AMR Surveillance Data Challenge.">
               <strong>2</strong>
               <span>Community challenges</span>
             </article>
-            <article class="stat" title="Binding-affinity prediction web servers &mdash; PCA-Pred and PCA-MutPred.">
-              <strong>2+</strong>
-              <span>Web servers</span>
+            <article class="stat" title="Journals peer-reviewed, including Nature Communications, Bioinformatics, and PLOS One.">
+              <strong>50+</strong>
+              <span>Journals reviewed</span>
             </article>
           </div>
           <h2 class="hero-subtitle">Focus areas:</h2>
@@ -1699,7 +1704,6 @@
       const dotLinks = [...document.querySelectorAll('.dot-nav a')];
       const allSectionLinks = [...navLinks, ...dotLinks];
       const activateNav = () => {
-        if (document.body.classList.contains('focus-mode')) return;
         const scrollY = window.scrollY + 120;
         let current = sections[0]?.id;
         sections.forEach((section) => {
@@ -1747,49 +1751,9 @@
 
       document.getElementById('year').textContent = new Date().getFullYear();
 
-      const mainSections = [...document.querySelectorAll('main > section[id]')];
-      const showAllBtn = document.getElementById('show-all-sections');
-
-      function isolateSection(id) {
-        mainSections.forEach((sec) => { sec.hidden = sec.id !== id; });
-        document.body.classList.add('focus-mode');
-        if (showAllBtn) showAllBtn.hidden = false;
-        allSectionLinks.forEach((link) => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
-        });
-      }
-
-      function showAllSections() {
-        mainSections.forEach((sec) => { sec.hidden = false; });
-        document.body.classList.remove('focus-mode');
-        if (showAllBtn) showAllBtn.hidden = true;
-      }
-
-      allSectionLinks.forEach((link) => {
-        link.addEventListener('click', () => {
-          const id = link.getAttribute('href').slice(1);
-          if (id) isolateSection(id);
-        });
-      });
-
-      if (showAllBtn) {
-        showAllBtn.addEventListener('click', () => {
-          showAllSections();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-
       if (backToTop) {
         backToTop.addEventListener('click', () => {
-          showAllSections();
           window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-
-      const brandLink = document.querySelector('.brand');
-      if (brandLink) {
-        brandLink.addEventListener('click', () => {
-          showAllSections();
         });
       }
 
